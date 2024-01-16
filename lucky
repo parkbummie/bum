@@ -1,0 +1,436 @@
+-- ninh
+-- taking an hour to finish, so hard to fix errors
+-- support me by subscribing on my channel (random vidzz) "https://www.youtube.com/@RandomVidzz-G"
+
+if game.PlaceId ~= 662417684 then
+ game:GetService("StarterGui"):SetCore("SendNotification",{
+Title = "Game Not Supported";
+Text = "Supported Game: Princess tycoon";
+Icon = "rbxassetid://14260295451";
+Duration = 7;}) 
+return false
+end
+
+if game.Players:FindFirstChild"GGH52Lan" or game.Players:FindFirstChild"GGH52Lan_2" then
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+Title = "GGH52Lan";
+Text = "the owner is here on the server!!";
+Icon = "rbxassetid://14260295451";
+Duration = 10;}) 
+end
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/turtle"))()
+local Window = library:Window("By GGH52Lan")
+
+local G = setmetatable({}, {__index = function(Self, Index)
+local NewService = game.GetService(game, Index)
+if NewService then
+Self[Index] = NewService
+end
+return NewService
+end})
+
+local Players = G.Players
+local plr = Players.LocalPlayer
+local lastPosOftoolgiver = {}
+local H
+local Connections = {}
+local Ch
+local reExecuted = false
+local lastPosOfCashGiver = nil
+
+   local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+   
+local function notify(n, c, i, t)
+n = n or "GGH52Lan"
+c = c or "text"
+i = i or "rbxassetid://14260295451"
+t = t or 5
+OrionLib:MakeNotification({
+    Name = n,
+    Content = c,
+    Image = i,
+    Time = t
+})
+OrionLib:Init()
+end
+
+local function findTycoon()
+    for i,v in pairs(workspace.Tycoons.Tycoons:GetDescendants()) do
+       if v:IsA"ObjectValue" and v.Value == plr then
+       return v.Parent
+end
+end
+end
+
+local function nmm()
+    wait()
+    for i,v in pairs(plr.Backpack:GetChildren()) do 
+    if v:IsA"Tool" and v.Name == "IceShuriken" then
+    v: Destroy ()
+    end
+    end
+    
+    for i,v in pairs(plr.Character:GetChildren()) do 
+    if v:IsA"Tool" and v.Name == "IceShuriken" then
+    v: Destroy ()
+    end
+    end
+    
+end
+ --[[
+local function GetTycoons()
+    local found= {}
+    for i,v in pairs(workspace.Tycoons.Tycoons:GetChildren()) do
+    table.insert(found, v)
+    end
+    return found 
+end
+
+local function PurchasedObjects()
+local found= {}
+for i,v in pairs(GetTycoons()) do
+    table.insert(found, v.PurchasedObjects)
+end
+return found 
+end ]]
+
+local function GetCreateCash()
+    for i,v in pairs(workspace.CrateParent:GetChildren()) do
+        if v then
+        v.CanCollide = false
+        v.Transparency = 1
+        v.CFrame = plr.Character.PrimaryPart.CFrame
+        end
+    end
+    H = workspace.CrateParent.ChildAdded:Connect(function(child)
+        wait(.1)
+        child.CanCollide = false
+        child.Transparency = 1
+        child.CFrame = plr.Character.PrimaryPart.CFrame
+    end)
+end
+
+local function stopCreateCash()
+   if H then H: Disconnect () end
+end
+
+local function DisableLaser(bool)
+    if bool then
+    for i,v in pairs(workspace.Tycoons.Tycoons:GetDescendants()) do
+    if v:IsA"Part" and v.Name == "Pipe" then
+    v.CanTouch = false
+    end
+    end
+    Ch = workspace.Tycoons.Tycoons.DescendantAdded:Connect(function(obj)
+    if obj:IsA"Part" and obj.Name == "Pipe" then
+    obj.CanTouch = false
+    end
+    end)
+    else
+     for i,v in pairs(workspace.Tycoons.Tycoons:GetDescendants()) do
+    if v:IsA"Part" and v.Name == "Pipe" then
+    v.CanTouch = true
+    end
+    end
+    Ch:Disconnect()
+    end
+end
+
+local function GetAllTools()
+for i,v in pairs(workspace.Tycoons.Tycoons:GetDescendants()) do
+       if v.Name == "PurchasedObjects" then
+       for h,b in pairs(v:GetDescendants()) do
+       if b:IsA"BasePart" and b.Name:match("Giver") then
+       lastPosOftoolgiver[b] = b.CFrame
+       wait()
+       b.CanCollide = false
+       b.Transparency = 1
+       b.CFrame = plr.Character.PrimaryPart.CFrame
+       end
+       end
+       end
+       end
+for i,v in pairs(lastPosOftoolgiver) do
+if i:IsA"Instance" then
+    i.CFrame = v
+    i.CanCollide = false
+    i.Transparency = 0
+end
+end
+table.clear(lastPosOftoolgiver)
+wait(1)
+end
+
+local loop = true
+local function autoCollectCash()
+    if not findTycoon() then return notify(nil, "Pls claim a tycoon") end
+        lastPosOfCashGiver = findTycoon().Essentials.Giver.CFrame
+        loop = true
+    while loop do
+    if not loop then break end
+    findTycoon().Essentials.Giver.CanCollide = false
+    findTycoon().Essentials.Giver.Transparency = 1
+    findTycoon().Essentials.Giver.CFrame = plr.Character.PrimaryPart.CFrame
+    wait(1)
+    end
+end
+
+local function StopautoCollectCash()
+if not findTycoon() then return nil end
+loop = false
+    findTycoon().Essentials.Giver.CanCollide = true
+    findTycoon().Essentials.Giver.Transparency = 0
+    findTycoon().Essentials.Giver.CFrame = lastPosOfCashGiver
+    loop = false
+end
+
+Window:Toggle("auto get 'Create Cash'", false, function(bool)
+    if bool then
+    GetCreateCash()
+    notify(nil, "auto Get CreateCash enabled")
+    else
+    stopCreateCash()
+    notify(nil, "auto Get CreateCash disabled")
+    end
+end)
+
+Window:Toggle("Disable Door Lasers damage", false, function(bool)
+    DisableLaser(bool)
+end)
+
+local GG = false
+Window:Toggle("Get All Weapons", false, function(bool)
+    if bool then
+    GG = bool
+    GetAllTools()
+       repeat -- so Players cant get weaponz 😝
+       GetAllTools()
+       wait(2) -- so Players cant get weaponz 😝
+       until GG == false
+       
+    else
+    GG = bool
+    wait()
+for i,v in pairs(lastPosOftoolgiver) do
+if i:IsA"Instance" then
+    i.CFrame = v
+    i.CanCollide = false
+    i.Transparency = 0
+end
+end
+    end
+end)
+
+Window:Toggle("Auto Collect Cash", false, function(bool)
+    if bool then
+    autoCollectCash()
+    else
+    StopautoCollectCash()
+    end
+end)
+
+local idt
+Window:Toggle("improve dropping tools", false, function(bool)
+    if bool then
+    nmm()
+    idt = plr.Backpack.ChildAdded: Connect(function(v)
+     if v.Name == "IceShuriken" then
+    nmm()
+end
+end)
+    else
+    idt: Disconnect ()
+    end
+end)
+
+
+Window:Button("Tool gui", function()
+    if reExecuted then return notify(nil, "Already loaded") end
+    reExecuted = true
+    loadstring(game:HttpGet("https://pastebin.com/raw/ZvstfPXM"))()
+end)
+
+Window:Button("infinite yield", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
+local function GetPlrs(txt)
+	    local tl = txt:lower()
+	    local found= {}
+	    if tl == "me" or tl == "me " then
+	    table.insert(found,game.Players.LocalPlayer)
+	    return found
+	    elseif tl == "random" or tl == "random " then
+	    table.insert(found,game.Players:GetPlayers()[math.random(1, #Game.Players:GetPlayers())])
+	    return found
+	    elseif tl == "others" or tl == "others " then
+	    for i,v in pairs(game.Players:GetPlayers()) do
+	    if v ~= game.Players.LocalPlayer then
+	    table.insert(found, v)
+	    end
+	    end
+	    return found
+	    elseif tl == "all" or tl == "all " then
+	    for i,v in pairs(game.Players:GetPlayers()) do
+	    table.insert(found, v)
+	    end
+	    return found
+	    elseif tl == "enemies" or tl == "enemies " then
+	    for i,v in pairs(game.Players:GetPlayers()) do
+	    if v ~= game.Players.LocalPlayer and v.Team ~= plr.Team then
+	    table.insert(found, v)
+	    end
+	    end
+	    return found
+	    elseif tl == "team" or tl == "team " then
+	    for i,v in pairs(game.Players:GetPlayers()) do
+	    if v ~= game.Players.LocalPlayer and v.Team == plr.Team then
+	    table.insert(found, v)
+	    end
+	    end
+	    return found
+	    else
+	    for i,v in pairs(game.Players:GetPlayers()) do
+	    if v.Name:lower():match(tl) or v.DisplayName:lower():match(tl) then
+	    table.insert(found, v)
+	    end
+	    end
+	    return found
+	end
+	end
+
+local KillW = library:Window("Kill Player")
+
+local Target = "enemies"
+KillW:Box("Kill - enemies", function(text, focuslost)
+   if focuslost then
+   Target = tostring(text)
+   end
+   end)
+   
+   local function bring(pl)
+       if pl.Name == "GGH52Lan" or pl.Name == "GGH52Lan_2" or pl == plr then return end
+       if pl and pl.Character and pl.Character:FindFirstChildOfClass"ForceField" == nil then
+       pl.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(1.6,0,-1.8)
+       
+       pl.Character.Humanoid.PlatformStand = true
+        
+        if pl.Character:FindFirstChildOfClass"Tool" then
+           pl.Character:FindFirstChildOfClass"Tool": Destroy ()
+        end
+        
+       end
+   end
+   
+   local Lop = false
+   
+ local function bringall()
+ 
+for _, player in pairs(game.Players:GetPlayers()) do
+if player.Name ~= "GGH52Lan" or player.Name ~="GGH52Lan_2" then
+    if player ~= plr and player.Character:FindFirstChildOfClass"ForceField" == nil then
+        player.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(1.6,0,-1.8)
+        player.Character.Humanoid.PlatformStand = true
+        
+        if player.Character:FindFirstChildOfClass"Tool" then
+           player.Character:FindFirstChildOfClass"Tool": Destroy ()
+        end
+        
+             if player.Character.Humanoid.Health <= 0 or plr.Character.Humanoid.Health <= 0 then
+             Lop = false
+             end
+    end
+end
+end
+end
+ 
+KillW:Button("Kill", function()
+    if not plr.Character:FindFirstChildOfClass"Tool" then return notify(nil, "Pls equip tool") end
+    if GetPlrs(Target)[1] then
+    local Tool = plr.Character:FindFirstChildOfClass"Tool"
+    Lop = true
+    for i,target in pairs(GetPlrs(Target)) do
+    while Lop == true do
+    Tool.Parent = plr.Character
+    bring(target)
+    Tool:Activate()
+    if target.Character.Humanoid.Health <= 0 or plr.Character.Humanoid.Health <= 0 then
+    
+    break 
+    end
+    wait(.1)
+    end
+    end
+    else
+    notify(nil, "invalid Player")
+    end
+end)
+
+KillW:Button("Kill all", function()
+    if not plr.Character:FindFirstChildOfClass"Tool" then return notify(nil, "Pls equip tool") end
+    local Tool = plr.Character:FindFirstChildOfClass"Tool"
+    Lop = true
+    
+    while Lop == true do
+    Tool.Parent = plr.Character
+    bringall()
+    Tool:Activate()
+     
+    wait(.1)
+    end
+    
+end)
+
+KillW:Button("Fix", function()
+  if not Lop then
+    Lop = true
+    else
+        Lop = false
+            Lop = false
+            end
+            local s, m = pcall(function()
+    for i,v in pairs(Connections) do
+    v:Disconnect()
+    end
+    return true
+    end)
+    if s then
+    notify(nil, "Stopped running Connections")
+    else
+    notify("error", m)
+    notify(nil, "No connection is running")
+    end
+end)
+
+KillW:Button("Equip Tool", function()
+    if  plr.Backpack:GetChildren()[1] then
+    plr.Backpack:GetChildren()[1].Parent = plr.Character
+    
+    end
+    wait(.1)
+end)
+
+KillW:Button("Drop Tool", function()
+for i,v in pairs(plr.Character:GetChildren()) do
+    if v:IsA"Tool" then
+    v.CanBeDropped = true
+    v.Parent = workspace
+    end
+    end
+    wait(.1)
+end)
+
+local maxToequip= 30 -- 30 tools can only be equipped cuz laggy
+KillW:Button("Equip all Tool", function()
+maxToequip= 30
+    for i,v in pairs(plr.Backpack:GetChildren()) do
+    if v:IsA"Tool" and maxToequip >= 1 then
+    maxToequip = maxToequip - 1
+    v.CanBeDropped = true
+    v.Parent = plr.Character
+    end
+    end
+end)
+
+notify(nil, "By ninh") 
