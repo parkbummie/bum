@@ -2,7 +2,7 @@
 -- taking an hour to finish, so hard to fix errors
 -- support me by subscribing on my channel (random vidzz) "https://www.youtube.com/@RandomVidzz-G"
 
-if game.PlaceId ~= 4967396519 then
+if game.PlaceId ~= 662417684 then
  game:GetService("StarterGui"):SetCore("SendNotification",{
 Title = "Game Not Supported";
 Text = "Supported Game: Princess tycoon";
