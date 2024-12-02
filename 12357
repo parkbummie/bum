@@ -2,11 +2,11 @@
 -- taking an hour to finish, so hard to fix errors
 -- support me by subscribing on my channel (random vidzz) "https://www.youtube.com/@RandomVidzz-G"
 
-if game.PlaceId ~= 10046918633 then
+if game.PlaceId ~= 11196200466 then
  game:GetService("StarterGui"):SetCore("SendNotification",{
 Title = "Game Not Supported";
 Text = "Supported Game: Princess tycoon";
-Icon = "rbxassetid://14260295451";
+Icon = "rbxassetid://11196200466";
 Duration = 7;}) 
 return false
 end
@@ -15,7 +15,7 @@ if game.Players:FindFirstChild"GGH52Lan" or game.Players:FindFirstChild"GGH52Lan
     game:GetService("StarterGui"):SetCore("SendNotification",{
 Title = "GGH52Lan";
 Text = "the owner is here on the server!!";
-Icon = "rbxassetid://14260295451";
+Icon = "rbxassetid://11196200466";
 Duration = 10;}) 
 end
 
